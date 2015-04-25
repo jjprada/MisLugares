@@ -16,6 +16,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AcercaDeActivity"
+            android:label="@string/title_activity_acerca_de"
+            android:theme="@style/Theme.AppCompat.Dialog" >
+        </activity>
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/Theme.AppCompat" >
+        </activity>
+        <activity
+            android:name=".Test2Activity"
+            android:label="@string/title_activity_test2"
+            android:theme="@style/Theme.AppCompat" >
+        </activity>
     </application>
 
 </manifest>

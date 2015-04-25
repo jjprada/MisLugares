@@ -1,9 +1,15 @@
 package com.jjprada.mislugares;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +18,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        lanzarActividad(R.id.button_acerca_de, AcercaDeActivity.class);
+        lanzarActividad(R.id.button_exit, null);
+        lanzarActividad(R.id.button_show, TestActivity.class);
+
     }
 
 
@@ -35,5 +46,32 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void sePulsa(View view){
+        Toast.makeText(this, "Pulsado", Toast.LENGTH_SHORT).show();
+    }
+
+    public void lanzarActividad(final int viewID, final Class actividad){
+        Button button = (Button)findViewById(viewID);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, actividad);
+
+                switch (viewID){
+                    case (R.id.button_acerca_de): case (R.id.button_show):
+                        startActivity(i);
+                        break;
+                    case (R.id.button_exit):
+                        finish();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        });
     }
 }
