@@ -25,7 +25,6 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -41,16 +40,17 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_settings:
+                return true;
+            case R.id.action_about:
+                Intent i = new Intent(MainActivity.this, AcercaDeActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.action_search:
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public void sePulsa(View view){
-        Toast.makeText(this, "Pulsado", Toast.LENGTH_SHORT).show();
     }
 
     public void lanzarActividad(final int viewID, final Class actividad){
@@ -74,4 +74,11 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
+
+
+/* CODIFGO PARA UNO DE LOS EJEMPLOS
+    public void sePulsa(View view){
+        Toast.makeText(this, "Pulsado", Toast.LENGTH_SHORT).show();
+    }
+*/
 }
