@@ -22,9 +22,11 @@
         android:id="@+id/button_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_show"/>
+        android:text="@string/button_show"
+        android:onClick="mostrarPreferencias"/>
 
     <Button
+        android:id="@+id/button_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_config"/>

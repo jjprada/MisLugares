@@ -22,14 +22,16 @@
             android:theme="@style/Theme.AppCompat.Dialog" >
         </activity>
         <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/Theme.AppCompat" >
+            android:name=".Preferences"
+            android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name=".Test2Activity"
-            android:label="@string/title_activity_test2"
-            android:theme="@style/Theme.AppCompat" >
+            android:name=".VistaLugarActivity"
+            android:label="@string/title_activity_vista_lugar" >
+        </activity>
+        <activity
+            android:name=".EdicionLugarActivity"
+            android:label="@string/title_activity_edicion_lugar" >
         </activity>
     </application>
 
