@@ -8,32 +8,40 @@ import java.util.List;
  */
 public class Lugares {
 
-    protected static List<Lugar> vectorLugares = ejemploLugares();
+    protected static List<Lugar> listaLugares = ejemploLugares();
 
     public Lugares() {
-        vectorLugares = ejemploLugares();
+        listaLugares = ejemploLugares();
     }
 
     static Lugar elemento(int id){
-        return vectorLugares.get(id);
+        return listaLugares.get(id);
     }
 
     static void anyade(Lugar lugar){
-        vectorLugares.add(lugar);
+        listaLugares.add(lugar);
     }
 
     static int nuevo(){
         Lugar lugar = new Lugar();
-        vectorLugares.add(lugar);
-        return vectorLugares.size()-1;
+        listaLugares.add(lugar);
+        return listaLugares.size()-1;
     }
 
     static void borrar(int id){
-        vectorLugares.remove(id);
+        listaLugares.remove(id);
     }
 
     public static int size() {
-        return vectorLugares.size();
+        return listaLugares.size();
+    }
+
+    static List listaNombres(){
+        ArrayList resultado = new ArrayList();
+        for (Lugar lugar: listaLugares){
+            resultado.add(lugar.getNombre());
+        }
+        return resultado;
     }
 
     public static ArrayList<Lugar> ejemploLugares() {

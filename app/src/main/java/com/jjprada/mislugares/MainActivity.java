@@ -12,8 +12,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +28,14 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lanzarActividad(R.id.button_acerca_de, AcercaDeActivity.class);
+        BaseAdapter baseAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, Lugares.listaNombres());
+        ListView listView = (ListView)findViewById(R.id.main_listView);
+        listView.setAdapter(baseAdapter);
+
+/*        lanzarActividad(R.id.button_acerca_de, AcercaDeActivity.class);
         lanzarActividad(R.id.button_exit, null);
         lanzarActividad(R.id.button_settings, Preferences.class);
-        lanzarActividad(R.id.button_show, VistaLugarActivity.class);
+        lanzarActividad(R.id.button_show, VistaLugarActivity.class);*/
     }
 
     @Override
