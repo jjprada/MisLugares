@@ -20,4 +20,10 @@
           android:icon="@android:drawable/ic_menu_search"
           android:orderInCategory="115"
           app:showAsAction="always|collapseActionView"/>
+
+    <item android:id="@+id/action_test"
+          android:title="@string/action_test"
+          android:icon="@android:drawable/ic_dialog_alert"
+          android:orderInCategory="125"
+          app:showAsAction="never"/>
 </menu>

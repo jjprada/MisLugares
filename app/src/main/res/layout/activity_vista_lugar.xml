@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
         <TextView
-            android:id="@+id/nombre"
+            android:id="@+id/lista_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -44,7 +44,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:onClick="verMapa">
             <ImageView
                 android:id="@+id/logo_direccion"
                 android:layout_width="40dp"
@@ -52,7 +53,7 @@
                 android:contentDescription="logo del tipo"
                 android:src="@android:drawable/ic_menu_myplaces" />
             <TextView
-                android:id="@+id/direccion"
+                android:id="@+id/lista_direccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -63,7 +64,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:onClick="llamadaTelefono">
             <ImageView
                 android:id="@+id/logo_phone"
                 android:layout_width="40dp"
@@ -82,7 +84,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:onClick="verWeb">
             <ImageView
                 android:id="@+id/logo_url"
                 android:layout_width="40dp"
@@ -152,17 +155,17 @@
         </LinearLayout>
 
         <RatingBar
-            android:id="@+id/valoracion"
+            android:id="@+id/lista_valoracion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_toRightOf="@+id/foto"
+            android:layout_toRightOf="@+id/lista_foto"
             android:rating="3" />
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
             <ImageView
-                android:id="@+id/foto"
+                android:id="@+id/lista_foto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
@@ -176,12 +179,20 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:contentDescription="logo camara"
-                    android:src="@android:drawable/ic_menu_camera" />
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:onClick="tomarFoto"/>
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:contentDescription="logo galeria"
-                    android:src="@android:drawable/ic_menu_gallery" />
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:onClick="abrirGaleria"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="Eliminar foto"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:onClick="eliminarFoto"/>
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

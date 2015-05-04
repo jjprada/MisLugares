@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -28,9 +29,18 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BaseAdapter baseAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, Lugares.listaNombres());
+        AdaptadorLugares adaptadorLugares = new AdaptadorLugares(this);
         ListView listView = (ListView)findViewById(R.id.main_listView);
-        listView.setAdapter(baseAdapter);
+        listView.setAdapter(adaptadorLugares);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(MainActivity.this, VistaLugarActivity.class);
+                i.putExtra(VistaLugarActivity.EXTRA, position);
+                startActivity(i);
+            }
+        });
 
 /*        lanzarActividad(R.id.button_acerca_de, AcercaDeActivity.class);
         lanzarActividad(R.id.button_exit, null);
@@ -47,13 +57,9 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         Intent i;
 
-        //noinspection SimplifiableIfStatement
         switch (id){
             case R.id.action_settings:
                 i = new Intent(MainActivity.this, Preferences.class);
@@ -69,6 +75,9 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(i);*/
                 mostrarLugar();
                 return true;
+            case R.id.action_test:
+                i = new Intent(MainActivity.this, TESTActivity.class);
+                startActivity(i);
             default:
                 return super.onOptionsItemSelected(item);
         }
