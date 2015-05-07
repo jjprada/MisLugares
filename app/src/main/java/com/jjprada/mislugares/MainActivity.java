@@ -1,33 +1,41 @@
 package com.jjprada.mislugares;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    private MediaPlayer mPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();*/
+
+        /*mPlayer = MediaPlayer.create(this, R.raw.leanon);
+        if (savedInstanceState != null){
+            int pos = savedInstanceState.getInt("posicion");
+            mPlayer.seekTo(pos);
+        } else {
+            mPlayer.start();
+        }*/
+        mPlayer = MediaPlayer.create(this, R.raw.leanon);
+        mPlayer.start();
 
         AdaptadorLugares adaptadorLugares = new AdaptadorLugares(this);
         ListView listView = (ListView)findViewById(R.id.main_listView);
@@ -145,4 +153,59 @@ public class MainActivity extends ActionBarActivity {
         Toast.makeText(this, "Pulsado", Toast.LENGTH_SHORT).show();
     }
 */
+
+    @Override protected void onStart() {
+        super.onStart();
+        Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
+        mPlayer.start();
+
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override protected void onStop() {
+        super.onStop();
+        Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+        mPlayer.pause();
+    }
+
+    @Override protected void onRestart() {
+        super.onRestart();
+        Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mPlayer != null){
+            int pos = mPlayer.getCurrentPosition();
+            outState.putInt("posicion", pos);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (mPlayer != null){
+            int pos = savedInstanceState.getInt("posicion");
+            mPlayer.seekTo(pos);
+        }
+    }
 }
+
+
