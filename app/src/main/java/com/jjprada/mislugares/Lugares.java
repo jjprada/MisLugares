@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class Lugares {
 
+    protected static GeoPunto posicionActual = new GeoPunto(0,0);
+
     protected static List<Lugar> listaLugares = ejemploLugares();
 
     public Lugares() {

@@ -63,6 +63,11 @@ public class TESTActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void testLocalizacion(View view) {
+        Intent i = new Intent(TESTActivity.this, TEST2Activity.class);
+        startActivity(i);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

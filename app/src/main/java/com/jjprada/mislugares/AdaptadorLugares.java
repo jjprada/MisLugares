@@ -18,6 +18,7 @@ public class AdaptadorLugares extends BaseAdapter {
     private TextView mNombre, mDireccion;
     private ImageView mFoto;
     private RatingBar mValoracion;
+    private TextView mDistancia;
 
     public AdaptadorLugares(Context contexto) {
         mInflater =(LayoutInflater)contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -57,6 +58,16 @@ public class AdaptadorLugares extends BaseAdapter {
 
         mValoracion = (RatingBar) vistaReciclada.findViewById(R.id.lista_valoracion);
         mValoracion.setRating(lugar.getValoracion());
+
+        mDistancia = (TextView) vistaReciclada.findViewById(R.id.lista_distancia);
+        if ((Lugares.posicionActual != null) && (lugar.getPosicion() != null)) {
+            int d = (int) Lugares.posicionActual.distancia(lugar.getPosicion());
+            if(d < 2000) {
+                mDistancia.setText(d + " m");
+            } else {
+                mDistancia.setText(d / 1000 + "Km");
+            }
+        }
 
         return vistaReciclada;
     }

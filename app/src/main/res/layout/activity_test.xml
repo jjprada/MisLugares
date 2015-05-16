@@ -66,4 +66,10 @@
         android:text="MANDAR CORREO"
         android:onClick="mandarCorreo"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TEST LOCALIZACION"
+        android:onClick="testLocalizacion"/>
+
 </LinearLayout>
