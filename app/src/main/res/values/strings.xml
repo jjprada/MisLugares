@@ -31,5 +31,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_edicion_lugar">EdicionLugarActivity</string>
+    <string name="title_activity_testgoogle_maps">TESTGoogleMapsActivity</string>
+    <string name="title_activity_mapa">MapaActivity</string>
 
 </resources>

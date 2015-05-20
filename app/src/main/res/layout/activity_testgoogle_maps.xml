@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.jjprada.mislugares.TESTGoogleMapsActivity">
+
+    <fragment
+        android:id="@+id/test_google_maps_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <Button  android:id="@+id/test_google_maps_button1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentBottom="true"
+             android:layout_toLeftOf="@+id/test_google_maps_button2"
+             android:onClick="moveCamera"
+             android:text="ir a UPV" />
+
+    <Button android:id="@+id/test_google_maps_button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="animateCamera"
+            android:text="a mi posición" />
+
+    <Button android:id="@+id/test_google_maps_button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/test_google_maps_button2"
+            android:onClick="addMarker"
+            android:text="marcador" />
+</RelativeLayout>

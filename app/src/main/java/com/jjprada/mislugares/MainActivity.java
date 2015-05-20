@@ -111,9 +111,14 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 startActivity(i);*/
                 mostrarLugar();
                 return true;
+            case R.id.action_mapa:
+                i = new Intent(MainActivity.this, MapaActivity.class);
+                startActivity(i);
+                return true;
             case R.id.action_test:
                 i = new Intent(MainActivity.this, TESTActivity.class);
                 startActivity(i);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

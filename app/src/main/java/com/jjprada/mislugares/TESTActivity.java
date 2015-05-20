@@ -68,6 +68,11 @@ public class TESTActivity extends ActionBarActivity {
         startActivity(i);
     }
 
+    public void testGoogleMaps(View view) {
+        Intent i = new Intent(TESTActivity.this, TESTGoogleMapsActivity.class);
+        startActivity(i);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
