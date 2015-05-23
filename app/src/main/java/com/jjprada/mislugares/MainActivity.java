@@ -3,6 +3,8 @@ package com.jjprada.mislugares;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -10,12 +12,14 @@ import android.media.MediaPlayer;
 import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -55,7 +59,19 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         mPlayer = MediaPlayer.create(this, R.raw.leanon);
         mPlayer.start();
 
-        AdaptadorLugares adaptadorLugares = new AdaptadorLugares(this);
+        /* Se modifica después de adaptar la app para el uso de BBDD
+        BaseAdapter adaptadorLugares = new AdaptadorLugares(this);
+         */
+        /* Primer versión del adaptador usado al introducir la BBDD
+        BaseAdapter adaptadorLugares = new SimpleCursorAdapter(this,
+                R.layout.elemento_lista,
+                Lugares.listado(),
+                new String[] { "nombre", "direccion"},
+                new int[] { R.id.lista_nombre, R.id.lista_direccion}, 0);
+        */
+        Lugares.iniciarBD(this);
+        // Lugares.modificarBBDD();
+        BaseAdapter adaptadorLugares = new AdaptadorCursorLugares(this, Lugares.listado());
         ListView listView = (ListView)findViewById(R.id.main_listView);
         listView.setAdapter(adaptadorLugares);
 
