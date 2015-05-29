@@ -14,6 +14,8 @@ import android.widget.TextView;
  */
 public class AdaptadorLugares extends BaseAdapter {
 
+    // ESTA CLASE YA NO SE USA UNA VEZ HEMOS INTRIDUCIDO LA BASE DE DATOS
+
     private LayoutInflater mInflater; // Crea Layouts a partir del XML
     private TextView mNombre, mDireccion;
     private ImageView mFoto;
@@ -73,7 +75,8 @@ public class AdaptadorLugares extends BaseAdapter {
     }
 
     public int getCount() {
-        return Lugares.size();
+        //return Lugares.size();
+        return 0;
     }
 
     public Object getItem(int posicion) {
@@ -83,4 +86,6 @@ public class AdaptadorLugares extends BaseAdapter {
     public long getItemId(int posicion) {
         return posicion;
     }
+
+
 }

@@ -24,7 +24,9 @@ import java.util.Date;
 
 public class VistaLugarActivity extends ActionBarActivity {
 
-    public final static String EXTRA = "EXTRA";
+    public final static String EXTRA = "EXTRA ID";
+
+    private final static String TAG = "VistaLugarActivity";
     private final static int REQUEST_EDITAR = 1;
     private final static int REQUEST_GALERIA = 2;
     private final static int REQUEST_FOTO = 3;
@@ -54,7 +56,6 @@ public class VistaLugarActivity extends ActionBarActivity {
         mID = extras.getLong("id", -1);*/
         mID = getIntent().getIntExtra(EXTRA, -1);
 
-        mLugar = Lugares.elemento(mID);
         // Datos Editables
         mNombreLugar = (TextView) findViewById(R.id.lista_nombre);
         mLogoTipo = (ImageView) findViewById(R.id.logo_tipo);
@@ -79,6 +80,7 @@ public class VistaLugarActivity extends ActionBarActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float valor, boolean fromUser) {
                 mLugar.setValoracion(valor);
+                Lugares.actualizarLugar(mID, mLugar);             // Guardar datos en la BBDD
             }
         });
     }
@@ -125,7 +127,7 @@ public class VistaLugarActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            switch (requestCode){
+            switch (requestCode) {
                 case REQUEST_EDITAR:
                     actualizarDatos();
                     findViewById(R.id.vista_activity).invalidate();
@@ -143,15 +145,10 @@ public class VistaLugarActivity extends ActionBarActivity {
         }
     }
 
-    private void actualizarFoto(String uri) {
-        if (uri != null) {
-            mFoto.setImageURI(Uri.parse(uri));            // Actualizamos la foto en la Vista
-        } else {
-            mFoto.setImageBitmap(null);                   // No foto o Uri no valido, no mostramos imagen
-        }
-    }
-
     private void actualizarDatos() {
+        // Buscar Lugar en función de la ID indicada
+        mLugar = Lugares.elemento(mID);                 // Se pone aquí para cuando editemos, actualice de nuevo los datos del Lugar en mLugar
+
         //Nombre
         mNombreLugar.setText(mLugar.getNombre());
         // Logo Tipo Lugar
@@ -159,7 +156,7 @@ public class VistaLugarActivity extends ActionBarActivity {
         // Tipo Lugar
         mTipoLugar.setText(mLugar.getTipoLugar().getTexto());
         // Direccion
-        if (mLugar.getDireccion().equals("")){
+        if ((mLugar.getDireccion() == null) || (mLugar.getDireccion().equals(""))){
             mDireccion.setVisibility(View.GONE);
             findViewById(R.id.logo_direccion).setVisibility(View.GONE);
         } else { mDireccion.setText(mLugar.getDireccion());}
@@ -169,12 +166,12 @@ public class VistaLugarActivity extends ActionBarActivity {
             findViewById(R.id.logo_phone).setVisibility(View.GONE);
         } else { mTelefono.setText(Integer.toString(mLugar.getTelefono()));}
         // URL
-        if (mLugar.getUrl().equals("")){
+        if ((mLugar.getUrl() == null) || (mLugar.getUrl().equals(""))){
             mUrl.setVisibility(View.GONE);
             findViewById(R.id.logo_url).setVisibility(View.GONE);
         } else { mUrl.setText(mLugar.getUrl());}
         // Comentario
-        if (mLugar.getComentario().equals("")){
+        if ((mLugar.getComentario() == null) || (mLugar.getComentario().equals(""))){
             mComentario.setVisibility(View.GONE);
             findViewById(R.id.logo_comentarios).setVisibility(View.GONE);
         } else { mComentario.setText(mLugar.getComentario());}
@@ -215,6 +212,7 @@ public class VistaLugarActivity extends ActionBarActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Lugares.borrar(mID);
+                        setResult(RESULT_OK);
                         finish();
                     }
                 })
@@ -243,6 +241,15 @@ public class VistaLugarActivity extends ActionBarActivity {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mLugar.getUrl())));
     }
 
+    private void actualizarFoto(String uri) {
+        if (uri != null) {
+            mFoto.setImageURI(Uri.parse(uri));            // Actualizamos la foto en la Vista
+        } else {
+            mFoto.setImageBitmap(null);                   // No foto o Uri no valido, no mostramos imagen
+        }
+        Lugares.actualizarLugar(mID, mLugar);             // Guardar datos en la BBDD
+    }
+
     public void abrirGaleria (View view){
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
@@ -258,7 +265,7 @@ public class VistaLugarActivity extends ActionBarActivity {
         startActivityForResult(i, REQUEST_FOTO);
     }
 
-    public void eliminarFoto (View view){
+    public void eliminarFoto (View view) {
         mLugar.setFoto(null);
         actualizarFoto(mLugar.getFoto());
     }

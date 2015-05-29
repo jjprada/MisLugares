@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class AdaptadorCursorLugares extends CursorAdapter {
 
     private LayoutInflater mInflador;                       // Crea Layouts a partir del XML
-    private TextView mNombre, mDireccion, mDistancia;
+    private TextView mNombre, mDireccion, mDistancia, mID_BD;
     private ImageView mFoto;
     private RatingBar mValoracion;
 
@@ -33,6 +33,9 @@ public class AdaptadorCursorLugares extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        mID_BD = (TextView) view.findViewById(R.id.lista_idBD);
+        mID_BD.setText(Integer.toString(cursor.getInt(cursor.getColumnIndex("_id"))));
+
         mNombre = (TextView) view.findViewById(R.id.lista_nombre);
         mNombre.setText(cursor.getString(cursor.getColumnIndex("nombre")));
 

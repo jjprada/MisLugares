@@ -1,6 +1,7 @@
 package com.jjprada.mislugares;
 
 public class Lugar {
+    private int idBD;
     private String nombre;
     private String direccion;
     private GeoPunto posicion;

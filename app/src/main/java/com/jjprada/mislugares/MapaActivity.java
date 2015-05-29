@@ -1,6 +1,7 @@
 package com.jjprada.mislugares;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentActivity;
@@ -33,23 +34,24 @@ public class MapaActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         mMapa.getUiSettings().setCompassEnabled(true);
         mMapa.setOnInfoWindowClickListener(this);
 
-        // El centro del mapa es situado en el primer lugar de la "Lista de Lugares" siempre que tenga algún elemento
-        if (Lugares.listaLugares.size() > 0) {
-            GeoPunto punto = Lugares.listaLugares.get(0).getPosicion();
-            mMapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(punto.getLatitud(), punto.getLongitud()), 12));
-        }
-
-        // Añadimos un marcador para cada lugar de la "Lista de Lugares"
-        for (Lugar lugar : Lugares.listaLugares) {
-            GeoPunto punto = lugar.getPosicion();
+        boolean primero = true;                 // Para chequear si es el primer elemento de la Lista de Lugares
+        Cursor cursor = Lugares.listado();      // Obtenemos el listado de los Lugares almacenados en la BD
+        while (cursor.moveToNext()){            // Recorremos el cursor entero, es decir, mientras haya un "next"
+            GeoPunto punto = new GeoPunto(cursor.getDouble(3), cursor.getDouble(4));
+            // Entramos si el Lugar tiene especificado una ubicación valida (punto) y si esa ubicación tiene especificada la latiud
             if ((punto != null) && (punto.getLatitud() != 0)) {
-                BitmapDrawable iconoDrawable = (BitmapDrawable) getResources().getDrawable(lugar.getTipoLugar().getRecurso());
+                // El centro del mapa es situado en el primer lugar de la "Lista de Lugares"
+                if (primero){
+                    mMapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(punto.getLatitud(), punto.getLongitud()), 12));
+                    primero = false;
+                }
+                // Añadimos un marcador para cada lugar de la "Lista de Lugares"
+                BitmapDrawable iconoDrawable = (BitmapDrawable) getResources().getDrawable(TipoLugar.values()[cursor.getInt(5)].getRecurso());
                 Bitmap iGrande = iconoDrawable.getBitmap();
                 Bitmap icono = Bitmap.createScaledBitmap(iGrande, iGrande.getWidth() / 7, iGrande.getHeight() / 7, false);
                 mMapa.addMarker(new MarkerOptions()
                         .position(new LatLng(punto.getLatitud(), punto.getLongitud()))
-                        .title(lugar.getNombre())
-                        .snippet(lugar.getDireccion())
+                        .title(cursor.getString(1)).snippet(cursor.getString(2))
                         .icon(BitmapDescriptorFactory.fromBitmap(icono)));
             }
         }
@@ -61,14 +63,11 @@ public class MapaActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         /* Es necesario averiguar a que lugar corresponde el marcador que se ha pulsado. */
         /* Para ello buscamos un lugar cuyo nombre coincida con el título del marcador. */
         /* Cuando se encuentre una coincidencia, se lanza la actividad indicando la "id" del lugar a mostrar */
-        for (int id = 0; id < Lugares.listaLugares.size(); id++){
-            Lugar lugar = Lugares.elemento(id);
-
-            if (lugar.getNombre().equals(marker.getTitle())) {
-                Intent i = new Intent(MapaActivity.this, VistaLugarActivity.class);
-                i.putExtra(VistaLugarActivity.EXTRA, id);
-                startActivity(i);
-            }
+        int id = Lugares.buscarNombre(marker.getTitle());
+        if (id!=-1){        // Si la id devuelta no corresponde a la indicada como "error"
+            Intent i = new Intent(MapaActivity.this, VistaLugarActivity.class);
+            i.putExtra(VistaLugarActivity.EXTRA, id);
+            startActivity(i);
         }
     }
 

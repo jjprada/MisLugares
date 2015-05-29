@@ -27,6 +27,14 @@
           android:orderInCategory="100"
           app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/action_new"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="80"
+        app:showAsAction="always"
+        android:title="Nuevo"/>
+
+
     <item android:id="@+id/action_test"
           android:title="@string/action_test"
           android:icon="@android:drawable/ic_dialog_alert"

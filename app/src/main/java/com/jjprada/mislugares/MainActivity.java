@@ -3,6 +3,7 @@ package com.jjprada.mislugares;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
@@ -23,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,11 +32,13 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
 
     private final static String TAG = "MainActivity";
 
+    private final static int REQUEST = 10;
     private static final long DOS_MINUTOS = 2 * 60 * 1000;
 
     private MediaPlayer mPlayer;
     private LocationManager mLocationManager;
     private Location mBestLocation;
+    private AdaptadorCursorLugares mAdaptadorLugares;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +74,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 new int[] { R.id.lista_nombre, R.id.lista_direccion}, 0);
         */
         Lugares.iniciarBD(this);
-        // Lugares.modificarBBDD();
-        BaseAdapter adaptadorLugares = new AdaptadorCursorLugares(this, Lugares.listado());
+
+        mAdaptadorLugares = new AdaptadorCursorLugares(this, Lugares.listado());
         ListView listView = (ListView)findViewById(R.id.main_listView);
-        listView.setAdapter(adaptadorLugares);
+        listView.setAdapter(mAdaptadorLugares);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int idBD = Integer.parseInt(((TextView) view.findViewById(R.id.lista_idBD)).getText().toString());
                 Intent i = new Intent(MainActivity.this, VistaLugarActivity.class);
-                i.putExtra(VistaLugarActivity.EXTRA, position);
-                startActivity(i);
+                i.putExtra(VistaLugarActivity.EXTRA, idBD);
+                startActivityForResult(i, REQUEST);
             }
         });
 
@@ -131,12 +136,27 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 i = new Intent(MainActivity.this, MapaActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.action_new:
+                int idNew = Lugares.nuevo();
+                i = new Intent(MainActivity.this, EdicionLugarActivity.class);
+                i.putExtra(EdicionLugarActivity.EXTRA_NEW, true);
+                i.putExtra(EdicionLugarActivity.EXTRA, idNew);
+                startActivityForResult(i, REQUEST);
+                return true;
             case R.id.action_test:
                 i = new Intent(MainActivity.this, TESTActivity.class);
                 startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST){        // No chequeamos el "resultCode", porque si volvemos de "VistaLugarActivity" con el boton de volver del dispositivo no actualizaría la lista al no considerarse como "RESULT_OK"
+            mAdaptadorLugares.changeCursor(Lugares.listado());  // Actualizamos los datos por si han sido modificados
         }
     }
 
