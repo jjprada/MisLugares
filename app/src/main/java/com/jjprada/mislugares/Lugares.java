@@ -105,6 +105,19 @@ public class Lugares {
         return id;
     }
 
+    // DEVUELEVE EL ID DEL PRIMER REGISTRO QUE HAYA EN LA BD
+    public static int primerId() {
+        int id = -1;                // Valor devuelto en caso de error
+        SQLiteDatabase bd = sBaseDatos.getReadableDatabase();
+        Cursor cursor = bd.rawQuery("SELECT _id FROM lugares LIMIT 1", null);       // Devuelve el campo "_id" del primer registro que encuentre
+        if (cursor.moveToFirst()){
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        bd.close();
+        return id;
+    }
+
     // SE USA PARA LAS OPCIONES DEL MAPA
     protected static GeoPunto posicionActual = new GeoPunto(0,0);
 }

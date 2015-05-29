@@ -3,28 +3,20 @@ package com.jjprada.mislugares;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
-import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -38,12 +30,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     private MediaPlayer mPlayer;
     private LocationManager mLocationManager;
     private Location mBestLocation;
-    private AdaptadorCursorLugares mAdaptadorLugares;
+   /* No es necesario que sea variable de clase al introducir los Fragments
+    private AdaptadorCursorLugares mAdaptadorLugares;*/
+
+    private VistaLugarFragment mVistaLugarFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
         /* lanzarActividad(R.id.button_acerca_de, AcercaDeActivity.class);
         lanzarActividad(R.id.button_exit, null);
@@ -75,6 +73,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         */
         Lugares.iniciarBD(this);
 
+        mVistaLugarFragment = (VistaLugarFragment) getSupportFragmentManager().findFragmentById(R.id.vista_lugar_fragment);
+        if (mVistaLugarFragment != null) {
+            mVistaLugarFragment.mostrarLugarFragment(Lugares.primerId());       // Muestra el primer Lugar de la BD al arrancar la BD en el fragment de la dercha
+        }
+
+        /* Ya no se usa al introducir los Fragments
         mAdaptadorLugares = new AdaptadorCursorLugares(this, Lugares.listado());
         ListView listView = (ListView)findViewById(R.id.main_listView);
         listView.setAdapter(mAdaptadorLugares);
@@ -87,7 +91,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 i.putExtra(VistaLugarActivity.EXTRA, idBD);
                 startActivityForResult(i, REQUEST);
             }
-        });
+        });*/
 
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Antes de nada comprobamos que alguno de los sistemas de localización este activado. Si no mostramos un mensaje para que el usuaro active alguno
@@ -121,43 +125,50 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
             case R.id.action_settings:
                 i = new Intent(MainActivity.this, Preferences.class);
                 startActivity(i);
-                return true;
+                break;
             case R.id.action_about:
                 i = new Intent(MainActivity.this, AcercaDeActivity.class);
                 startActivity(i);
-                return true;
+                break;
             case R.id.action_search:
                 /*i = new Intent(MainActivity.this, VistaLugarActivity.class);
                 i.putExtra(VistaLugarActivity.EXTRA, 0);
                 startActivity(i);*/
-                mostrarLugar();
-                return true;
+                mostrarLugarID();
+                break;
             case R.id.action_mapa:
                 i = new Intent(MainActivity.this, MapaActivity.class);
                 startActivity(i);
-                return true;
+                break;
             case R.id.action_new:
                 int idNew = Lugares.nuevo();
                 i = new Intent(MainActivity.this, EdicionLugarActivity.class);
                 i.putExtra(EdicionLugarActivity.EXTRA_NEW, true);
                 i.putExtra(EdicionLugarActivity.EXTRA, idNew);
                 startActivityForResult(i, REQUEST);
-                return true;
+                break;
             case R.id.action_test:
                 i = new Intent(MainActivity.this, TESTActivity.class);
                 startActivity(i);
-                return true;
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST){        // No chequeamos el "resultCode", porque si volvemos de "VistaLugarActivity" con el boton de volver del dispositivo no actualizaría la lista al no considerarse como "RESULT_OK"
-            mAdaptadorLugares.changeCursor(Lugares.listado());  // Actualizamos los datos por si han sido modificados
+            actualizarLista();
         }
+    }
+
+    public void actualizarLista() {
+        ListView listView = (ListView)findViewById(R.id.fragment_listView);
+        AdaptadorCursorLugares adaptadorLugares = (AdaptadorCursorLugares)listView.getAdapter();
+        adaptadorLugares.changeCursor(Lugares.listado());  // Actualizamos los datos por si han sido modificados
     }
 
     public void lanzarActividad(final int viewID, final Class actividad){
@@ -171,7 +182,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                     case (R.id.button_show):
                         // i.putExtra(VistaLugarActivity.EXTRA, 0);
                         // startActivity(i);
-                        mostrarLugar();
+                        mostrarLugarID();
                         break;
                     case (R.id.button_acerca_de):case (R.id.button_settings):
                         startActivity(i);
@@ -188,7 +199,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         });
     }
 
-    public void mostrarLugar(){
+    public void mostrarLugarID(){
         final EditText mensaje = new EditText(this);
         mensaje.setText("1");   // Lugar para mostrar por defecto, ya que ahora mismo solo tenemos defino uno
 
@@ -346,6 +357,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
+    }
+
+
+    // SE USA CON LOS FRAGMENTS // AL PULSAR EN UN ELEMENTO DE LA LISAT, MUESTRA UN LUGAR EN EL FRAGMENT DE LA DERECHA O ABRE UNA ACTIVIDAD SI NO ES UNA TABLET
+    public void muestraLugar(int idBD) {
+        if (mVistaLugarFragment != null) {
+            mVistaLugarFragment.mostrarLugarFragment(idBD);
+        } else {
+            Intent i = new Intent(this, VistaLugarActivity.class);
+            i.putExtra(VistaLugarActivity.EXTRA, idBD);
+            startActivityForResult(i, 0);
+        }
     }
 }
 

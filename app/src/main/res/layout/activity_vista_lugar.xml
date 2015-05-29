@@ -42,10 +42,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/elemento_mapa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:onClick="verMapa">
+            android:orientation="horizontal">
             <ImageView
                 android:id="@+id/logo_direccion"
                 android:layout_width="40dp"
@@ -62,10 +62,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/elemento_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:onClick="llamadaTelefono">
+            android:orientation="horizontal">
             <ImageView
                 android:id="@+id/logo_phone"
                 android:layout_width="40dp"
@@ -82,10 +82,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/elemento_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:onClick="verWeb">
+            android:orientation="horizontal">
             <ImageView
                 android:id="@+id/logo_url"
                 android:layout_width="40dp"
@@ -176,23 +176,23 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right" >
                 <ImageView
+                    android:id="@+id/tomar_Foto"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:contentDescription="logo camara"
-                    android:src="@android:drawable/ic_menu_camera"
-                    android:onClick="tomarFoto"/>
+                    android:src="@android:drawable/ic_menu_camera"/>
                 <ImageView
+                    android:id="@+id/abrir_galeria"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:contentDescription="logo galeria"
-                    android:src="@android:drawable/ic_menu_gallery"
-                    android:onClick="abrirGaleria"/>
+                    android:src="@android:drawable/ic_menu_gallery"/>
                 <ImageView
+                    android:id="@+id/eliminar_foto"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:contentDescription="Eliminar foto"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
-                    android:onClick="eliminarFoto"/>
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"/>
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

@@ -24,9 +24,11 @@ import java.util.Date;
 
 public class VistaLugarActivity extends ActionBarActivity {
 
-    public final static String EXTRA = "EXTRA ID";
-
     private final static String TAG = "VistaLugarActivity";
+
+    public final static String EXTRA = "ID";
+
+    /*
     private final static int REQUEST_EDITAR = 1;
     private final static int REQUEST_GALERIA = 2;
     private final static int REQUEST_FOTO = 3;
@@ -45,16 +47,16 @@ public class VistaLugarActivity extends ActionBarActivity {
     private RatingBar mValoracion;
     private ImageView mFoto;
     private Uri mUriFotoCamara;
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vista_lugar);
+        setContentView(R.layout.fragment_vista_lugar);
 
         /* VERSION CURSO PARA OBTENER EL EXTRA
         Bundle extras = getIntent().getExtras();
         mID = extras.getLong("id", -1);*/
-        mID = getIntent().getIntExtra(EXTRA, -1);
+/*        mID = getIntent().getIntExtra(EXTRA, -1);
 
         // Datos Editables
         mNombreLugar = (TextView) findViewById(R.id.lista_nombre);
@@ -83,6 +85,7 @@ public class VistaLugarActivity extends ActionBarActivity {
                 Lugares.actualizarLugar(mID, mLugar);             // Guardar datos en la BBDD
             }
         });
+*/
     }
 
     @Override
@@ -91,9 +94,10 @@ public class VistaLugarActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_vista_lugar, menu);
         return true;
     }
-
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
         Intent i;
 
@@ -122,7 +126,7 @@ public class VistaLugarActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -269,5 +273,6 @@ public class VistaLugarActivity extends ActionBarActivity {
         mLugar.setFoto(null);
         actualizarFoto(mLugar.getFoto());
     }
+    */
 }
 

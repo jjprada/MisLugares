@@ -126,8 +126,9 @@ public class EdicionLugarActivity extends ActionBarActivity {
             return true;
         } else if (id == R.id.edit_cancel){
             if (mIsNew){    // Si estamos en Edición a traves de crear un Lugar nuevo // El ID que tenemos es el de la BBDD, pero como en "borrar" usamos un "id+1" aqui para igualar usamos un "id-1"
-                Lugares.borrar(mID-1);
+                Lugares.borrar(mID);
             }
+            setResult(RESULT_CANCELED);
             finish();
             return true;
         }

@@ -8,9 +8,18 @@
               android:paddingTop="@dimen/activity_vertical_margin"
               tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/main_listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <fragment
+        android:id="@+id/selector_fragment"
+        android:name="com.jjprada.mislugares.SelectorFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <fragment
+        android:id="@+id/vista_lugar_fragment"
+        android:name="com.jjprada.mislugares.VistaLugarFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
 </LinearLayout>
