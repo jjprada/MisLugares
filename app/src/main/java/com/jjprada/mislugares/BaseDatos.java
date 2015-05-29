@@ -28,6 +28,8 @@ public class BaseDatos extends SQLiteOpenHelper {
                 "comentario TEXT, " +
                 "fecha LONG, " +
                 "valoracion REAL)");
+
+        /* SON DATOS DE EJEMPLO QUE INTRODUCE NADA M´S CREAR LA BASE DE DATOS, PERO NO SON NECESARIOS
         db.execSQL("INSERT INTO lugares VALUES (null, " +
                 "'Escuela Politécnica Superior de Gandía', " +
                 "'C/ Paranimf, 1 46730 Gandia (SPAIN)', -0.166093, 38.995656, " +
@@ -51,7 +53,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO lugares VALUES (null, 'La Vital', " +
                 "'Avda. de La Vital, 0 46701 Gandia (Valencia)', -0.1720092, 38.9705949, " +
                 TipoLugar.COMPRAS.ordinal() + ", '', 962881070, 'http://www.lavital.es', " +
-                "'El típico centro comercial', " + System.currentTimeMillis() + ", 2.0)");
+                "'El típico centro comercial', " + System.currentTimeMillis() + ", 2.0)");*/
     }
 
     @Override

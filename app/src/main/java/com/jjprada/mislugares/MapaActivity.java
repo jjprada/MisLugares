@@ -60,9 +60,9 @@ public class MapaActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     // Al pulsar sobre una ventana de información se abre la actividad que muestra información detallada de ese lugar
     @Override
     public void onInfoWindowClick(Marker marker) {
-        /* Es necesario averiguar a que lugar corresponde el marcador que se ha pulsado. */
-        /* Para ello buscamos un lugar cuyo nombre coincida con el título del marcador. */
-        /* Cuando se encuentre una coincidencia, se lanza la actividad indicando la "id" del lugar a mostrar */
+        /* Es necesario averiguar a que lugar corresponde el marcador que se ha pulsado.
+        ** Para ello buscamos un lugar cuyo nombre coincida con el título del marcador.
+        ** Cuando se encuentre una coincidencia, se lanza la actividad indicando la "id" del lugar a mostrar */
         int id = Lugares.buscarNombre(marker.getTitle());
         if (id!=-1){        // Si la id devuelta no corresponde a la indicada como "error"
             Intent i = new Intent(MapaActivity.this, VistaLugarActivity.class);
