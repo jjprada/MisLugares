@@ -31,8 +31,7 @@ import java.util.Date;
 
 public class VistaLugarFragment extends Fragment {
 
-    private final static String TAG = "VistaLugarFragment";
-
+    public final static String TAG = "VistaLugarFragment";
 
     private final static int REQUEST_EDITAR = 1;
     private final static int REQUEST_GALERIA = 2;
@@ -245,8 +244,10 @@ public class VistaLugarFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_EDITAR:
-                    actualizarDatos();
-                    mView.findViewById(R.id.vista_activity).invalidate();
+                    mID = data.getIntExtra(VistaLugarActivity.EXTRA, -1);
+                    mostrarLugarFragment(mID);
+                    //actualizarDatos();
+                    //getView().findViewById(R.id.vista_activity).invalidate();
                     break;
                 case REQUEST_GALERIA:
                     String uri = data.getDataString();

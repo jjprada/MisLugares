@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,6 +69,7 @@ public class SelectorFragment extends Fragment /*implements AdapterView.OnItemCl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST){        // No chequeamos el "resultCode", porque si volvemos de "VistaLugarActivity" con el boton de volver del dispositivo no actualizaría la lista al no considerarse como "RESULT_OK"
             mAdaptadorLugares.changeCursor(Lugares.listado());  // Actualizamos los datos por si han sido modificados
         }

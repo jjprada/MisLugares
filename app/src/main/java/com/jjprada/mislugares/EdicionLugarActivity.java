@@ -121,7 +121,9 @@ public class EdicionLugarActivity extends ActionBarActivity {
             // No es necesario chequeo, porque por defecto ya tiene un valor; "Otros"
             mLugar.setTipoLugar(TipoLugar.values()[mTipoLugar.getSelectedItemPosition()]);
             Lugares.actualizarLugar(mID, mLugar);           // Guardar datos en la BBDD
-            setResult(RESULT_OK);
+            Intent i = new Intent();
+            i.putExtra(VistaLugarActivity.EXTRA, mID);
+            setResult(RESULT_OK, i);
             finish();
             return true;
         } else if (id == R.id.edit_cancel){

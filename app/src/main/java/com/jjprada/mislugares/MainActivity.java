@@ -160,6 +160,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST){        // No chequeamos el "resultCode", porque si volvemos de "VistaLugarActivity" con el boton de volver del dispositivo no actualizaría la lista al no considerarse como "RESULT_OK"
             actualizarLista();
         }
@@ -367,7 +368,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener{
         } else {
             Intent i = new Intent(this, VistaLugarActivity.class);
             i.putExtra(VistaLugarActivity.EXTRA, idBD);
-            startActivityForResult(i, 0);
+            startActivityForResult(i, REQUEST);
         }
     }
 }
