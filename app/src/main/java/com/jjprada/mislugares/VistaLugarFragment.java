@@ -2,6 +2,8 @@ package com.jjprada.mislugares;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,18 +20,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
-public class VistaLugarFragment extends Fragment {
+public class VistaLugarFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     public final static String TAG = "VistaLugarFragment";
 
@@ -52,10 +60,11 @@ public class VistaLugarFragment extends Fragment {
     private RatingBar mValoracion;
     private ImageView mFoto;
     private Uri mUriFotoCamara;
+    private SimpleDateFormat mFormato;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_vista_lugar, container, false);
         setHasOptionsMenu(true);
 
@@ -101,6 +110,22 @@ public class VistaLugarFragment extends Fragment {
                 eliminarFoto();
             }
         });
+        // LISTNER PARA CAMBIAR LA FECHA
+        ImageView ivFecha = (ImageView) view.findViewById(R.id.logo_fecha);
+        ivFecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cambiarFecha();
+            }
+        });
+        // LISTNER PARA CAMBIAR LA HORA
+        ImageView ivHora = (ImageView) view.findViewById(R.id.logo_hora);
+        ivHora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cambiarHora();
+            }
+        });
 
         return view;
     }
@@ -143,7 +168,8 @@ public class VistaLugarFragment extends Fragment {
         mFecha.setText(DateFormat.getDateInstance().format(new Date(mLugar.getFecha())));
         // Hora
         mHora = (TextView) mView.findViewById(R.id.hora);
-        mHora.setText(DateFormat.getTimeInstance().format(new Date(mLugar.getFecha())));
+        mFormato = new SimpleDateFormat("HH:mm", java.util.Locale.getDefault());
+        mHora.setText(mFormato.format(new Date(mLugar.getFecha())));
         // Valoracion
         mValoracion = (RatingBar) mView.findViewById(R.id.lista_valoracion);
         mValoracion.setRating(mLugar.getValoracion());
@@ -355,6 +381,52 @@ public class VistaLugarFragment extends Fragment {
     private void eliminarFoto () {
         mLugar.setFoto(null);
         actualizarFoto(mLugar.getFoto());
+    }
+
+    // METODO PARA EL CAMBIO DE FECHA DE UN LUGAR
+    public void cambiarFecha() {
+        DialogoSelectorFecha dialogoFecha = new DialogoSelectorFecha();     // Creamos un nuevo objeto diálogo, el cual va a extender "DialogFragment"
+        dialogoFecha.setOnDateSetListener(this);                            // Asignamos el escuchador a nuestra propia clase creada. Se llamará al método "onDateSet()" cuando se cambie de fecha
+        Bundle args = new Bundle();                                         // Creamos un Bundle donde almacenaremos la fecha a enviar al Dialog
+        args.putLong("fecha", mLugar.getFecha());
+        dialogoFecha.setArguments(args);
+        dialogoFecha.show(getActivity().getSupportFragmentManager(), "selectorFecha");
+    }
+    // METODO NECSARIO PARA IMPLEMENTAR EL LISTNER "DatePickerDialog.OnDateSetListener"
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar calendario = Calendar.getInstance();                       // Creamos un objeto "Calendar" para almacenar la información con la nueva fecha que asociacremos al lugar
+        calendario.setTimeInMillis(mLugar.getFecha());                      // Inicializamos el objeto "Calendar" con la antigua fecha que tiene almacenada el Lugar
+        calendario.set(Calendar.YEAR, year);                                // Modificamos sólo el ano según los parámetros que nos han pasado
+        calendario.set(Calendar.MONTH, month);                              // Modificamos sólo el mes según los parámetros que nos han pasado
+        calendario.set(Calendar.DAY_OF_MONTH, dayOfMonth);                  // Modificamos sólo el día según los parámetros que nos han pasado
+        mLugar.setFecha(calendario.getTimeInMillis());                      // Actualizamos la fecha del Lugar, con la nueva fecha modificada almacenada en "calendario"
+        Lugares.actualizarLugar(mID, mLugar);                               // Actualizamos la BD, para que almacene la nueva fecha
+        TextView textHora = (TextView) getView().findViewById(R.id.fecha);  // Hacemos "fetch" del UI que muestra la gecha
+        DateFormat format = DateFormat.getDateInstance();                   // Damos formato a la fecha, indicando que tome el mismo formato que usa el sistema
+        textHora.setText(format.format(new Date(mLugar.getFecha())));       // Modifiamos el texto, con la nueva fecha formateada
+    }
+
+    // METODO PARA EL CAMBIO DE HORA DE UN LUGAR
+    public void cambiarHora() {
+        DialogoSelectorHora dialogoHora = new DialogoSelectorHora();        // Creamos un nuevo objeto diálogo, el cual va a extender "DialogFragment"
+        dialogoHora.setOnTimeSetListener(this);                             // Asignamos el escuchador a nuestra propia clase creada. Se llamará al método "onTimeSet()" cuando se cambie de hora
+        Bundle args = new Bundle();                                         // Creamos un Bundle donde almacenaremos la fecha a enviar al Dialog
+        args.putLong("fecha", mLugar.getFecha());
+        dialogoHora.setArguments(args);
+        dialogoHora.show(getActivity().getSupportFragmentManager(), "selectorHora");
+    }
+    // METODO NECSARIO PARA IMPLEMENTAR EL LISTNER "TimePickerDialog.OnTimeSetListener"
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        Calendar calendario = Calendar.getInstance();                       // Creamos un objeto "Calendar" para almacenar la información con la nueva fecha que asociacremos al lugar
+        calendario.setTimeInMillis(mLugar.getFecha());                      // Inicializamos el objeto "Calendar" con la antigua fecha que tiene almacenada el Lugar
+        calendario.set(Calendar.HOUR_OF_DAY, hourOfDay);                    // Modificamos sólo la hora según los parámetros que nos han pasado
+        calendario.set(Calendar.MINUTE, minute);                            // Modificamos sólo los minutos según los parámetros que nos han pasado
+        mLugar.setFecha(calendario.getTimeInMillis());                      // Actualizamos la fecha del Lugar, con la nueva fecha modificada almacenada en "calendario"
+        Lugares.actualizarLugar(mID, mLugar);                               // Actualizamos la BD, para que almacene la nueva hora
+        TextView textHora = (TextView) getView().findViewById(R.id.hora);   // Hacemos "fetch" del UI que muestra la hora.
+        textHora.setText(mFormato.format(new Date(mLugar.getFecha())));     // Modifiamos el texto, con la nueva fecha formateada
     }
 }
 

@@ -117,6 +117,8 @@ public class EdicionLugarActivity extends ActionBarActivity {
             if ((mComentario.getText() != null) && (!mComentario.getText().toString().equals(""))) {
                 mLugar.setComentario(mComentario.getText().toString());
                 Log.d(TAG, "Save: Grabar Comentario");
+
+                System.currentTimeMillis();
             }
             // No es necesario chequeo, porque por defecto ya tiene un valor; "Otros"
             mLugar.setTipoLugar(TipoLugar.values()[mTipoLugar.getSelectedItemPosition()]);
